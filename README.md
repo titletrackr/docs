@@ -1,55 +1,64 @@
-# Mintlify Starter Kit
+# TitleTrackr Developer Docs
 
-Use the starter kit to get your docs deployed and ready to customize.
+The source for the [TitleTrackr Developer API](https://developer.titletrackr.com) documentation, built with [Mintlify](https://mintlify.com).
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+These docs cover the partner-facing API for pushing data into TitleTrackr — creating orders and uploading documents to the File Vault.
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+## Structure
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
-
-## AI-assisted writing
-
-Set up your AI coding tool to work with Mintlify:
-
-```bash
-npx skills add https://mintlify.com/docs
+```
+docs.json              # Site config: navigation, theme, logos, links
+custom.css             # Landing-page hero styling (dark green gradient)
+openapi.json           # OpenAPI spec — powers the API Reference tab
+introduction.mdx       # Custom "Build with TitleTrackr" landing page
+authentication.mdx     # Bearer-token auth, errors, rate limits
+requesting-access.mdx  # How to get an API key
+orders/                # Orders API guides (overview, create, custom fields)
+file-vault/            # File Vault API guides (overview, upload, folders, metadata)
+logo/                  # light.png / dark.png navbar logos
 ```
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
-
-See the [AI tools guides](/ai-tools) for tool-specific setup.
+The site has two tabs: **Guides** (the `.mdx` pages above) and **API Reference** (auto-generated from `openapi.json`).
 
 ## Development
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+Install the [Mintlify CLI](https://www.npmjs.com/package/mint):
 
-```
+```bash
 npm i -g mint
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+Run the dev server from the repo root (where `docs.json` lives):
 
-```
+```bash
 mint dev
 ```
 
-View your local preview at `http://localhost:3000`.
+View the local preview at `http://localhost:3000`.
 
-## Publishing changes
+Before pushing, validate the build and check links:
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+```bash
+mint validate
+mint broken-links
+```
 
-## Need help?
+## Editing content
 
-### Troubleshooting
+- Pages are MDX with YAML frontmatter (`title` is required; add `description` for SEO).
+- Internal links use root-relative paths without extensions, e.g. `/orders/overview`.
+- New pages must be added to the `navigation` in `docs.json` to appear in the sidebar.
+- API endpoints come from `openapi.json` — update the spec to change the API Reference.
+- The landing page (`introduction.mdx`) uses `mode: "custom"` and the styles in `custom.css`.
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
+## Publishing
 
-### Resources
+The repo is connected to Mintlify via its GitHub app. Pushing to `main` deploys to production automatically.
+
+> **Note:** This repo pushes as the `cto-titletrackr` GitHub account. `origin` uses the `git@github.com-titletrackr:titletrackr/docs.git` SSH alias.
+
+## Links
+
+- [TitleTrackr app](https://app.titletrackr.com)
+- [Request API access](https://developer.titletrackr.com/request)
 - [Mintlify documentation](https://mintlify.com/docs)
