@@ -13,16 +13,28 @@ Each uploaded file is returned with the following fields.
   Original file name.
 </ResponseField>
 
+<ResponseField name="file_type" type="string">
+  The file extension, e.g. `pdf`, `docx`.
+</ResponseField>
+
+<ResponseField name="mime_type" type="string">
+  The content type of the upload, e.g. `application/pdf`.
+</ResponseField>
+
+<ResponseField name="page_count" type="integer | null">
+  Number of pages for PDFs; `null` for non-PDF files.
+</ResponseField>
+
 <ResponseField name="file_size" type="integer">
   Size in bytes.
 </ResponseField>
 
-<ResponseField name="folder_id" type="integer | null">
-  The folder the file lives in, or `null` for the root.
+<ResponseField name="file_size_human" type="string">
+  Human-readable size, e.g. `242.3 KB`.
 </ResponseField>
 
-<ResponseField name="is_multimodal_pdf" type="boolean">
-  Whether the PDF was detected as image-heavy (affects size/page limits).
+<ResponseField name="folder_id" type="integer | null">
+  The folder the file lives in, or `null` for the root.
 </ResponseField>
 
 <ResponseField name="is_processing" type="boolean">

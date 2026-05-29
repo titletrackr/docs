@@ -32,6 +32,7 @@ organize them into folders.
 PDF, DOCX, DOC, PPTX, PPT, TXT, XLSX, XLS, PNG, JPG, JPEG, TIFF, GIF, BMP, WEBP.
 
 <Note>
-  Limits: 100 MB per file (50 MB for image-heavy "multimodal" PDFs). PDFs are
-  capped at 500 pages (300 for multimodal PDFs).
+  Limits: up to 100 MB per file and 500 pages per PDF. Image-heavy PDFs have
+  tighter limits (50 MB / 300 pages). Files that exceed a limit are rejected
+  with a reason in the `errors` array — see [Upload Files](/file-vault/upload).
 </Note>

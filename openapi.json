@@ -222,9 +222,12 @@
         "properties": {
           "id": { "type": "integer" },
           "filename": { "type": "string" },
+          "file_type": { "type": "string" },
+          "mime_type": { "type": "string" },
+          "page_count": { "type": "integer", "nullable": true },
           "file_size": { "type": "integer" },
+          "file_size_human": { "type": "string" },
           "folder_id": { "type": "integer", "nullable": true },
-          "is_multimodal_pdf": { "type": "boolean" },
           "is_processing": { "type": "boolean" },
           "public_url": { "type": "string", "nullable": true },
           "created_at": { "type": "string", "format": "date-time" }
