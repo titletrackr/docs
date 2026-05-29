@@ -1,0 +1,67 @@
+---
+title: "Custom Fields"
+description: "GET /api/v1/order-fields"
+api: "GET /api/v1/order-fields"
+---
+
+Each workspace configures its own custom fields on orders. Call this endpoint
+to discover the field schema before creating orders.
+
+## Response
+
+<ResponseField name="core_fields" type="array">
+  The built-in fields every order supports (`order_number`, `due_date`).
+</ResponseField>
+
+<ResponseField name="custom_fields" type="array">
+  Your workspace's active custom fields. Each has a `key` (use this in the
+  `custom_fields` object when creating an order), `label`, `type`, `required`
+  flag, and `options` (for select-type fields).
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.titletrackr.com/api/v1/order-fields \
+  -H "Authorization: Bearer ttr_live_xxx" \
+  -H "Accept: application/json"
+```
+
+```json Response (200)
+{
+  "core_fields": [
+    { "key": "order_number", "label": "Order #", "type": "text", "required": true },
+    { "key": "due_date", "label": "Due Date", "type": "date", "required": false }
+  ],
+  "custom_fields": [
+    {
+      "key": "underwriter",
+      "label": "Underwriter",
+      "type": "text",
+      "required": false,
+      "options": null
+    },
+    {
+      "key": "transaction_type",
+      "label": "Transaction Type",
+      "type": "dropdown",
+      "required": true,
+      "options": ["Purchase", "Refinance"]
+    }
+  ]
+}
+```
+
+</CodeGroup>
+
+## Field types
+
+| Type | Value format |
+| --- | --- |
+| `text`, `paragraph` | String |
+| `date` | `YYYY-MM-DD` string |
+| `dropdown` | One of the `options` strings |
+| `multiselect` | Array of `options` strings |
+| `company`, `people` | The entity's numeric id |

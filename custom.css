@@ -1,0 +1,84 @@
+/* ---- TitleTrackr landing hero ---- */
+
+.tt-landing {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Hero band with top-right green glow over a near-black base.
+   In light mode the base lightens so text stays readable. */
+.tt-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  padding: 5rem 3.5rem 5.5rem;
+  margin-top: 1.5rem;
+  background:
+    radial-gradient(
+      120% 140% at 100% 0%,
+      rgba(24, 226, 153, 0.28) 0%,
+      rgba(12, 140, 94, 0.22) 28%,
+      rgba(10, 15, 13, 0) 60%
+    ),
+    linear-gradient(160deg, #0a0f0d 0%, #0c1512 55%, #0a0f0d 100%);
+  border: 1px solid rgba(24, 226, 153, 0.12);
+}
+
+/* Light mode: keep the glow but on a soft light surface */
+html:not(.dark) .tt-hero {
+  background:
+    radial-gradient(
+      120% 140% at 100% 0%,
+      rgba(24, 226, 153, 0.22) 0%,
+      rgba(12, 140, 94, 0.14) 30%,
+      rgba(255, 255, 255, 0) 62%
+    ),
+    linear-gradient(160deg, #f6fbf8 0%, #eef6f1 100%);
+  border: 1px solid rgba(12, 140, 94, 0.16);
+}
+
+.tt-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #18e299;
+  margin: 0 0 1rem;
+}
+html:not(.dark) .tt-eyebrow {
+  color: #0c8c5e;
+}
+
+.tt-title {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem;
+  color: #f4f7f5;
+}
+html:not(.dark) .tt-title {
+  color: #0f1f18;
+}
+
+.tt-subtitle {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  max-width: 34rem;
+  margin: 0;
+  color: rgba(228, 240, 234, 0.72);
+}
+html:not(.dark) .tt-subtitle {
+  color: rgba(15, 31, 24, 0.7);
+}
+
+/* Section heading for the card grid */
+.tt-section-heading {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 3.5rem 0 2rem;
+  color: var(--tt-heading, inherit);
+}

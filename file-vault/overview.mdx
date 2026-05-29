@@ -1,0 +1,37 @@
+---
+title: "File Vault Overview"
+description: "Push documents into the TitleTrackr File Vault."
+---
+
+The File Vault API lets you upload documents into TitleTrackr's File Vault and
+organize them into folders.
+
+## Endpoints
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/api/v1/file-vault/folders` | List folders. |
+| `POST` | `/api/v1/file-vault/folders` | Create a folder. |
+| `POST` | `/api/v1/file-vault/upload` | Upload one or more files. |
+
+## Typical flow
+
+<Steps>
+  <Step title="Create or find a folder (optional)">
+    [Create a folder](/file-vault/folders) to organize uploads, or upload to the
+    workspace root.
+  </Step>
+  <Step title="Upload your documents">
+    [`POST /file-vault/upload`](/file-vault/upload) with your files as
+    `multipart/form-data`.
+  </Step>
+</Steps>
+
+## Supported file types
+
+PDF, DOCX, DOC, PPTX, PPT, TXT, XLSX, XLS, PNG, JPG, JPEG, TIFF, GIF, BMP, WEBP.
+
+<Note>
+  Limits: 100 MB per file (50 MB for image-heavy "multimodal" PDFs). PDFs are
+  capped at 500 pages (300 for multimodal PDFs).
+</Note>

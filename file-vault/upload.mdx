@@ -1,0 +1,70 @@
+---
+title: "Upload Files"
+description: "POST /api/v1/file-vault/upload"
+api: "POST /api/v1/file-vault/upload"
+---
+
+Upload one or more documents into the File Vault. Send the request as
+`multipart/form-data`.
+
+## Request
+
+<ParamField body="files" type="file[]" required>
+  One or more files. Use repeated `files[]` parts for multiple uploads.
+</ParamField>
+
+<ParamField body="folder_id" type="integer">
+  Target folder id. Omit to upload to the workspace root. Must be a folder in
+  your workspace.
+</ParamField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://api.titletrackr.com/api/v1/file-vault/upload \
+  -H "Authorization: Bearer ttr_live_xxx" \
+  -F "files[]=@deed.pdf" \
+  -F "files[]=@survey.pdf" \
+  -F "folder_id=42"
+```
+
+```json Response (201)
+{
+  "success": true,
+  "message": "Files uploaded successfully",
+  "files": [
+    {
+      "id": 9001,
+      "filename": "deed.pdf",
+      "file_size": 248133,
+      "folder_id": 42,
+      "is_multimodal_pdf": false,
+      "is_processing": false,
+      "public_url": "https://app.titletrackr.com/storage/vault-files/...",
+      "created_at": "2026-05-29T04:00:00.000000Z"
+    }
+  ],
+  "errors": []
+}
+```
+
+</CodeGroup>
+
+## Partial failures
+
+Files are validated individually. If some succeed and others fail (e.g. a PDF
+over the page limit), the response is still `201` with the successful files in
+`files` and per-file reasons in `errors`:
+
+```json
+{
+  "success": true,
+  "message": "Some files uploaded successfully, but 1 file(s) failed validation",
+  "files": [ /* ... */ ],
+  "errors": [
+    { "filename": "huge.pdf", "error": "PDF exceeds 500 page limit" }
+  ]
+}
+```

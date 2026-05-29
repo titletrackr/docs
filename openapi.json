@@ -1,0 +1,235 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TitleTrackr Developer API",
+    "version": "1.0.0",
+    "description": "Push orders and documents into TitleTrackr."
+  },
+  "servers": [{ "url": "https://api.titletrackr.com/api/v1" }],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/order-fields": {
+      "get": {
+        "summary": "Discover order fields",
+        "description": "Returns the core and custom field schema for orders.",
+        "responses": {
+          "200": {
+            "description": "Field schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "core_fields": { "type": "array", "items": { "$ref": "#/components/schemas/Field" } },
+                    "custom_fields": { "type": "array", "items": { "$ref": "#/components/schemas/Field" } }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "summary": "Create an order",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["order_number"],
+                "properties": {
+                  "order_number": { "type": "string", "maxLength": 255 },
+                  "due_date": { "type": "string", "format": "date" },
+                  "address": { "type": "string" },
+                  "city": { "type": "string" },
+                  "county": { "type": "string" },
+                  "state": { "type": "string" },
+                  "custom_fields": { "type": "object", "additionalProperties": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "data": { "$ref": "#/components/schemas/Order" } }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/file-vault/folders": {
+      "get": {
+        "summary": "List folders",
+        "responses": {
+          "200": {
+            "description": "Folders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "folders": { "type": "array", "items": { "$ref": "#/components/schemas/Folder" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a folder",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string", "maxLength": 255 },
+                  "parent_id": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Folder created" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/file-vault/upload": {
+      "post": {
+        "summary": "Upload files",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["files"],
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": { "type": "string", "format": "binary" }
+                  },
+                  "folder_id": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Upload result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "files": { "type": "array", "items": { "$ref": "#/components/schemas/FileVaultFile" } },
+                    "errors": { "type": "array", "items": { "type": "object" } }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer" }
+    },
+    "responses": {
+      "Unauthorized": { "description": "Missing or invalid API key." },
+      "Forbidden": { "description": "Key not authorized for the Developer API." },
+      "ValidationError": {
+        "description": "Validation failed.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "type": "string" },
+                "errors": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Field": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string" },
+          "type": { "type": "string" },
+          "required": { "type": "boolean" },
+          "options": { "type": "array", "items": { "type": "string" }, "nullable": true }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "order_number": { "type": "string" },
+          "status": { "type": "string" },
+          "due_date": { "type": "string", "format": "date", "nullable": true },
+          "address": { "type": "string", "nullable": true },
+          "city": { "type": "string", "nullable": true },
+          "county": { "type": "string", "nullable": true },
+          "state": { "type": "string", "nullable": true },
+          "custom_fields": { "type": "object", "additionalProperties": true },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Folder": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "parent_id": { "type": "integer", "nullable": true }
+        }
+      },
+      "FileVaultFile": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "filename": { "type": "string" },
+          "file_size": { "type": "integer" },
+          "folder_id": { "type": "integer", "nullable": true },
+          "is_multimodal_pdf": { "type": "boolean" },
+          "is_processing": { "type": "boolean" },
+          "public_url": { "type": "string", "nullable": true },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

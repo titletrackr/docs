@@ -1,0 +1,46 @@
+---
+title: "File Metadata & Processing"
+description: "Understand the fields returned for uploaded files."
+---
+
+Each uploaded file is returned with the following fields.
+
+<ResponseField name="id" type="integer">
+  The File Vault file id.
+</ResponseField>
+
+<ResponseField name="filename" type="string">
+  Original file name.
+</ResponseField>
+
+<ResponseField name="file_size" type="integer">
+  Size in bytes.
+</ResponseField>
+
+<ResponseField name="folder_id" type="integer | null">
+  The folder the file lives in, or `null` for the root.
+</ResponseField>
+
+<ResponseField name="is_multimodal_pdf" type="boolean">
+  Whether the PDF was detected as image-heavy (affects size/page limits).
+</ResponseField>
+
+<ResponseField name="is_processing" type="boolean">
+  Whether the file is still being indexed for search. Newly uploaded files are
+  not processed until search is enabled in-app.
+</ResponseField>
+
+<ResponseField name="public_url" type="string | null">
+  A direct URL to the file when it is stored on public storage; `null`
+  otherwise.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO-8601 upload timestamp.
+</ResponseField>
+
+<Note>
+  Search indexing and OCR are not triggered automatically on API upload. Files
+  are stored and available immediately; enabling search is a separate in-app
+  action today.
+</Note>

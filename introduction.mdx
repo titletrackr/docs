@@ -1,0 +1,62 @@
+---
+title: "Introduction"
+description: "Push orders and documents into TitleTrackr programmatically."
+mode: "custom"
+---
+
+<div className="tt-landing">
+
+<div className="tt-hero">
+  <p className="tt-eyebrow">Developer Documentation</p>
+  <h1 className="tt-title">Build with TitleTrackr</h1>
+  <p className="tt-subtitle">
+    The TitleTrackr Developer API lets integration partners push data into
+    TitleTrackr — migrate orders and documents from another system, or keep
+    TitleTrackr in sync with your platform.
+  </p>
+</div>
+
+<h2 className="tt-section-heading">Explore by product</h2>
+
+<Columns cols={3}>
+  <Card title="Orders API" icon="clipboard-list" href="/orders/overview">
+    Create orders with custom fields and attachments in the Orders Tool.
+  </Card>
+  <Card title="File Vault API" icon="folder-open" href="/file-vault/overview">
+    Upload documents into the File Vault, organized with folders and metadata.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Authenticate every request with your scoped, per-tenant API key.
+  </Card>
+</Columns>
+
+## Base URL
+
+All endpoints are versioned and served from:
+
+```
+https://api.titletrackr.com/api/v1
+```
+
+## How it works
+
+<Steps>
+  <Step title="Request access">
+    API access is gated. [Request access](/requesting-access) and our team will
+    issue you a scoped API key.
+  </Step>
+  <Step title="Authenticate">
+    Send your key as a Bearer token on every request. See
+    [Authentication](/authentication).
+  </Step>
+  <Step title="Push data">
+    Create orders or upload documents using the endpoints in this reference.
+  </Step>
+</Steps>
+
+<Note>
+  Access is granted per-tenant. Your API key is scoped to a single TitleTrackr
+  workspace and can only read and write that workspace's data.
+</Note>
+
+</div>

@@ -1,0 +1,60 @@
+---
+title: "Folders"
+description: "List and create File Vault folders."
+---
+
+Folders organize your uploaded documents. They can be nested.
+
+## List folders
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.titletrackr.com/api/v1/file-vault/folders \
+  -H "Authorization: Bearer ttr_live_xxx" \
+  -H "Accept: application/json"
+```
+
+```json Response (200)
+{
+  "folders": [
+    { "id": 42, "name": "Migrations", "parent_id": null },
+    { "id": 43, "name": "2026", "parent_id": 42 }
+  ]
+}
+```
+
+</CodeGroup>
+
+## Create a folder
+
+<ParamField body="name" type="string" required>
+  Folder name. Must be unique within its parent.
+</ParamField>
+
+<ParamField body="parent_id" type="integer">
+  Parent folder id for nesting. Omit to create at the root.
+</ParamField>
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://api.titletrackr.com/api/v1/file-vault/folders \
+  -H "Authorization: Bearer ttr_live_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Migrations" }'
+```
+
+```json Response (201)
+{
+  "success": true,
+  "message": "Folder created successfully",
+  "folder": { "id": 42, "name": "Migrations", "parent_id": null }
+}
+```
+
+</CodeGroup>
+
+<Note>
+  Creating a folder whose name already exists at the same level returns `422`.
+</Note>

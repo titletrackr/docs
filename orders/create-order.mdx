@@ -1,0 +1,79 @@
+---
+title: "Create an Order"
+description: "POST /api/v1/orders"
+api: "POST /api/v1/orders"
+---
+
+Create an order in your workspace's Orders Tool.
+
+## Request
+
+<ParamField body="order_number" type="string" required>
+  Your order number / reference. Up to 255 characters.
+</ParamField>
+
+<ParamField body="due_date" type="string">
+  Due date in `YYYY-MM-DD` format.
+</ParamField>
+
+<ParamField body="address" type="string">
+  Property street address.
+</ParamField>
+
+<ParamField body="city" type="string">
+  Property city.
+</ParamField>
+
+<ParamField body="county" type="string">
+  Property county.
+</ParamField>
+
+<ParamField body="state" type="string">
+  Property state.
+</ParamField>
+
+<ParamField body="custom_fields" type="object">
+  A map of custom field `key` → value. Discover available keys via
+  [`GET /order-fields`](/orders/custom-fields). Array values (e.g. multi-select)
+  are accepted. Unknown keys are ignored.
+</ParamField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://api.titletrackr.com/api/v1/orders \
+  -H "Authorization: Bearer ttr_live_xxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "order_number": "API-1001",
+    "due_date": "2026-06-15",
+    "address": "123 Main St",
+    "custom_fields": { "underwriter": "Acme Title" }
+  }'
+```
+
+```json Response (201)
+{
+  "data": {
+    "id": "a8Xk2",
+    "order_number": "API-1001",
+    "status": "active",
+    "due_date": "2026-06-15",
+    "address": "123 Main St",
+    "city": null,
+    "county": null,
+    "state": null,
+    "custom_fields": { "underwriter": "Acme Title" },
+    "created_at": "2026-05-29T04:00:00.000000Z",
+    "updated_at": "2026-05-29T04:00:00.000000Z"
+  }
+}
+```
+
+</CodeGroup>
+
+<ResponseField name="data.id" type="string">
+  The obfuscated order id. Use this as the opaque identifier for the order.
+</ResponseField>

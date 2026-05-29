@@ -1,0 +1,32 @@
+---
+title: "Orders Overview"
+description: "Push orders into the TitleTrackr Orders Tool."
+---
+
+The Orders API lets you create orders in TitleTrackr's Orders Tool, including
+any custom fields your workspace has configured.
+
+## Endpoints
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/api/v1/order-fields` | Discover the order field schema (core + custom). |
+| `POST` | `/api/v1/orders` | Create an order. |
+
+## Typical flow
+
+<Steps>
+  <Step title="Discover your fields">
+    Call [`GET /order-fields`](/orders/custom-fields) to learn which custom
+    fields your workspace expects and their keys.
+  </Step>
+  <Step title="Create the order">
+    [`POST /orders`](/orders/create-order) with the order number and any custom
+    field values.
+  </Step>
+</Steps>
+
+<Note>
+  Order ids returned by the API are obfuscated strings (not sequential
+  integers). Use them as opaque identifiers.
+</Note>

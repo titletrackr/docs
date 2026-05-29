@@ -1,0 +1,48 @@
+---
+title: "Authentication"
+description: "Authenticate requests with your API key."
+---
+
+The Developer API uses bearer-token authentication. Your API key is a
+TitleTrackr personal access token scoped with the `api:v1` ability and bound to
+a single tenant.
+
+## Sending your key
+
+Include your key in the `Authorization` header on every request:
+
+```bash
+curl https://api.titletrackr.com/api/v1/order-fields \
+  -H "Authorization: Bearer ttr_live_xxxxxxxxxxxxxxxxxxxx" \
+  -H "Accept: application/json"
+```
+
+<Warning>
+  Treat your API key like a password. It grants full read/write access to your
+  workspace's orders and File Vault. Never embed it in client-side code.
+</Warning>
+
+## Tenant scoping
+
+Your key already carries the tenant it belongs to — you do **not** need to send
+a tenant id with each request. Every order created and document uploaded is
+automatically associated with your workspace.
+
+## Errors
+
+| Status | Meaning |
+| --- | --- |
+| `401 Unauthorized` | Missing or invalid API key. |
+| `403 Forbidden` | The key is not authorized for the Developer API, or no tenant is associated with it. |
+| `422 Unprocessable Entity` | Validation failed. The `errors` object lists the offending fields. |
+| `429 Too Many Requests` | Rate limit exceeded. Retry after the `Retry-After` header. |
+
+## Rate limits
+
+| Category | Limit |
+| --- | --- |
+| Writes (create order, upload) | 30 requests / minute |
+| Reads (list fields, list folders) | 120 requests / minute |
+
+Limits are per tenant. Exceeding a limit returns `429` with a `Retry-After`
+header indicating how long to wait.
