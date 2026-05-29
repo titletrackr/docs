@@ -55,8 +55,6 @@ mint broken-links
 
 The repo is connected to Mintlify via its GitHub app. Pushing to `main` deploys to production automatically.
 
-> **Note:** Write access to this repo is granted to the `cto-titletrackr` GitHub account. If your default key can't push, point this repo's `origin` at an SSH alias for that account (this is a per-repo `git remote set-url`, not a global Git change).
-
 ## Links
 
 - [Live docs](https://docs.titletrackr.com)
