@@ -1,6 +1,6 @@
 # TitleTrackr Developer Docs
 
-The source for the [TitleTrackr Developer API](https://developer.titletrackr.com) documentation, built with [Mintlify](https://mintlify.com).
+The source for the [TitleTrackr Developer API documentation](https://docs.titletrackr.com), built with [Mintlify](https://mintlify.com).
 
 These docs cover the partner-facing API for pushing data into TitleTrackr — creating orders and uploading documents to the File Vault.
 
@@ -55,10 +55,11 @@ mint broken-links
 
 The repo is connected to Mintlify via its GitHub app. Pushing to `main` deploys to production automatically.
 
-> **Note:** This repo pushes as the `cto-titletrackr` GitHub account. `origin` uses the `git@github.com-titletrackr:titletrackr/docs.git` SSH alias.
+> **Note:** Write access to this repo is granted to the `cto-titletrackr` GitHub account. If your default key can't push, point this repo's `origin` at an SSH alias for that account (this is a per-repo `git remote set-url`, not a global Git change).
 
 ## Links
 
+- [Live docs](https://docs.titletrackr.com)
 - [TitleTrackr app](https://app.titletrackr.com)
 - [Request API access](https://developer.titletrackr.com/request)
 - [Mintlify documentation](https://mintlify.com/docs)
