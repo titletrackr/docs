@@ -1,0 +1,80 @@
+---
+title: "Templates"
+description: "GET /api/v1/abstract-templates"
+api: "GET /api/v1/abstract-templates"
+---
+
+Every abstract is created under a **template**. The template determines which
+custom fields the abstract accepts. Call this endpoint to discover your
+templates and their field schema before creating abstracts.
+
+## Response
+
+<ResponseField name="templates" type="array">
+  Your workspace's abstract templates. Each has an `id` (use this as
+  `template_id` when creating an abstract), a `name`, a `default` flag, and a
+  `custom_fields` array.
+</ResponseField>
+
+<ResponseField name="templates[].custom_fields" type="array">
+  The custom fields this template accepts. Each has a `key` (use this in the
+  `custom_fields` object when creating an abstract), `label`, `type`, and
+  `options` (for select-type fields). A `required` flag is included for
+  forward-compatibility; abstract custom fields are not currently enforced as
+  required by the API.
+</ResponseField>
+
+## Example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.titletrackr.com/api/v1/abstract-templates \
+  -H "Authorization: Bearer ttr_live_xxx" \
+  -H "Accept: application/json"
+```
+
+```json Response (200)
+{
+  "templates": [
+    {
+      "id": 7,
+      "name": "Residential Abstract",
+      "default": true,
+      "custom_fields": [
+        {
+          "key": "file_number",
+          "label": "File Number",
+          "type": "text",
+          "required": true,
+          "options": null
+        },
+        {
+          "key": "search_type",
+          "label": "Search Type",
+          "type": "dropdown",
+          "required": false,
+          "options": ["Current Owner", "Two Owner", "Full Search"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+</CodeGroup>
+
+## Field types
+
+| Type | Value format |
+| --- | --- |
+| `text`, `paragraph` | String |
+| `date` | `YYYY-MM-DD` string |
+| `dropdown` | One of the `options` strings |
+| `multiselect` | Array of `options` strings |
+| `company`, `people` | The entity's numeric id |
+
+<Note>
+  If you don't pass a `template_id` when creating an abstract, your workspace's
+  `default` template is used.
+</Note>
