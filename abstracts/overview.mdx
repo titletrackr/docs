@@ -1,0 +1,50 @@
+---
+title: "Abstracts Overview"
+description: "Create title abstracts in TitleTrackr from a template."
+---
+
+The Abstracts API lets you create a title abstract in TitleTrackr by pushing a
+few custom fields, then attaching the documents — either in the same request or
+later, once they're ready.
+
+An abstract belongs to a **template**. The template defines which custom fields
+the abstract accepts. You pick the template when you create the abstract.
+
+## Endpoints
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/api/v1/abstract-templates` | List abstract templates and their custom-field schema. |
+| `POST` | `/api/v1/abstracts` | Create an abstract, with optional document files. |
+
+## Typical flow
+
+A common integration is a **one-click push** from another system: your software
+creates an abstract in TitleTrackr with the right custom fields filled in, and
+the documents are uploaded later, when they're ready.
+
+<Steps>
+  <Step title="Discover your templates">
+    Call [`GET /abstract-templates`](/abstracts/templates) once to learn your
+    template ids and the custom fields each one accepts.
+  </Step>
+  <Step title="Create the abstract">
+    [`POST /abstracts`](/abstracts/create-abstract) with a `template_id` and any
+    custom field values. No documents are required.
+  </Step>
+  <Step title="Add documents when ready">
+    Attach documents in the same `POST /abstracts` call by including `files[]`,
+    or have a user upload them in the TitleTrackr app afterward.
+  </Step>
+</Steps>
+
+<Note>
+  Documents are **optional** on create. Send the fields alone to create the
+  abstract now, or include `files[]` to create it with documents attached in a
+  single request.
+</Note>
+
+<Note>
+  Abstract ids returned by the API are obfuscated strings (not sequential
+  integers). Use them as opaque identifiers.
+</Note>

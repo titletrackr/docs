@@ -73,6 +73,82 @@
         }
       }
     },
+    "/abstract-templates": {
+      "get": {
+        "summary": "List abstract templates",
+        "description": "Returns the tenant's abstract templates and the custom-field schema each accepts.",
+        "responses": {
+          "200": {
+            "description": "Templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "templates": { "type": "array", "items": { "$ref": "#/components/schemas/AbstractTemplate" } }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/abstracts": {
+      "post": {
+        "summary": "Create an abstract",
+        "description": "Create a title abstract, optionally attaching document files in the same request.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "template_id": { "type": "integer", "description": "Template to create the abstract under. Omit to use the default template." },
+                  "custom_fields": { "type": "string", "description": "JSON-encoded map of custom field key to value." },
+                  "address": { "type": "string" },
+                  "city": { "type": "string" },
+                  "county": { "type": "string" },
+                  "state": { "type": "string" },
+                  "tax_map": { "type": "string" },
+                  "files": {
+                    "type": "array",
+                    "description": "Optional document files to attach.",
+                    "items": { "type": "string", "format": "binary" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Abstract created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Abstract" },
+                    "errors": {
+                      "type": "array",
+                      "description": "Per-file failures. Empty when every file succeeded or none were sent.",
+                      "items": { "type": "object" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
     "/file-vault/folders": {
       "get": {
         "summary": "List folders",
@@ -191,6 +267,32 @@
           "type": { "type": "string" },
           "required": { "type": "boolean" },
           "options": { "type": "array", "items": { "type": "string" }, "nullable": true }
+        }
+      },
+      "AbstractTemplate": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "default": { "type": "boolean" },
+          "custom_fields": { "type": "array", "items": { "$ref": "#/components/schemas/Field" } }
+        }
+      },
+      "Abstract": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "template_id": { "type": "integer", "nullable": true },
+          "status": { "type": "string", "nullable": true },
+          "address": { "type": "string", "nullable": true },
+          "city": { "type": "string", "nullable": true },
+          "county": { "type": "string", "nullable": true },
+          "state": { "type": "string", "nullable": true },
+          "tax_map": { "type": "string", "nullable": true },
+          "custom_fields": { "type": "object", "additionalProperties": true },
+          "files": { "type": "array", "items": { "$ref": "#/components/schemas/FileVaultFile" } },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
         }
       },
       "Order": {

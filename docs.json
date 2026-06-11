@@ -26,6 +26,14 @@
             ]
           },
           {
+            "group": "Abstracts API",
+            "pages": [
+              "abstracts/overview",
+              "abstracts/templates",
+              "abstracts/create-abstract"
+            ]
+          },
+          {
             "group": "File Vault API",
             "pages": [
               "file-vault/overview",

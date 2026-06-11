@@ -1,0 +1,195 @@
+---
+title: "Create an Abstract"
+description: "POST /api/v1/abstracts"
+api: "POST /api/v1/abstracts"
+---
+
+Create a title abstract in your workspace from a template. Send the request as
+`multipart/form-data`. Document files are optional — include `files[]` to attach
+them now, or omit them and add documents later.
+
+This single endpoint supports a one-click push from another system: send the
+custom fields to create the abstract, and attach documents in the same call or
+whenever they're ready.
+
+## Request
+
+<ParamField body="template_id" type="integer">
+  The template to create the abstract under. Discover ids via
+  [`GET /abstract-templates`](/abstracts/templates). Omit to use your
+  workspace's default template.
+</ParamField>
+
+<ParamField body="custom_fields" type="object">
+  A map of custom field `key` → value. Discover available keys via
+  [`GET /abstract-templates`](/abstracts/templates). Array values (e.g.
+  multi-select) are accepted. Unknown keys are ignored. Send as a JSON-encoded
+  string in the multipart form.
+</ParamField>
+
+<ParamField body="address" type="string">
+  Property street address.
+</ParamField>
+
+<ParamField body="city" type="string">
+  Property city.
+</ParamField>
+
+<ParamField body="county" type="string">
+  Property county.
+</ParamField>
+
+<ParamField body="state" type="string">
+  Property state.
+</ParamField>
+
+<ParamField body="tax_map" type="string">
+  Tax map / parcel identifier.
+</ParamField>
+
+<ParamField body="files" type="file[]">
+  Optional. One or more document files to attach to the abstract. Use repeated
+  `files[]` parts for multiple uploads. Omit to create the abstract with no
+  documents and upload them later.
+</ParamField>
+
+## Example: one-click push (no documents yet)
+
+This is the typical create-now, upload-later flow. The abstract is created with
+its custom fields; documents are added later.
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://api.titletrackr.com/api/v1/abstracts \
+  -H "Authorization: Bearer ttr_live_xxx" \
+  -H "Accept: application/json" \
+  -F "template_id=7" \
+  -F 'custom_fields={"file_number":"GA-48817","search_type":"Full Search"}' \
+  -F "address=123 Main St" \
+  -F "city=Springfield" \
+  -F "county=Sangamon" \
+  -F "state=IL"
+```
+
+```json Response (201)
+{
+  "data": {
+    "id": "q7Lm9",
+    "template_id": 7,
+    "status": "New",
+    "address": "123 Main St",
+    "city": "Springfield",
+    "county": "Sangamon",
+    "state": "IL",
+    "tax_map": null,
+    "custom_fields": {
+      "file_number": "GA-48817",
+      "search_type": "Full Search"
+    },
+    "files": [],
+    "created_at": "2026-05-29T04:00:00.000000Z",
+    "updated_at": "2026-05-29T04:00:00.000000Z"
+  },
+  "errors": []
+}
+```
+
+</CodeGroup>
+
+## Example: create with documents attached
+
+If the documents are ready, attach them in the same request with `files[]`.
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://api.titletrackr.com/api/v1/abstracts \
+  -H "Authorization: Bearer ttr_live_xxx" \
+  -H "Accept: application/json" \
+  -F "template_id=7" \
+  -F 'custom_fields={"file_number":"GA-48817"}' \
+  -F "files[]=@deed.pdf" \
+  -F "files[]=@mortgage.pdf"
+```
+
+```json Response (201)
+{
+  "data": {
+    "id": "q7Lm9",
+    "template_id": 7,
+    "status": "New",
+    "address": null,
+    "city": null,
+    "county": null,
+    "state": null,
+    "tax_map": null,
+    "custom_fields": { "file_number": "GA-48817" },
+    "files": [
+      {
+        "id": 9100,
+        "filename": "deed.pdf",
+        "file_type": "pdf",
+        "mime_type": "application/pdf",
+        "page_count": 4,
+        "file_size": 102400,
+        "file_size_human": "100 KB",
+        "folder_id": null,
+        "is_processing": true,
+        "public_url": "https://app.titletrackr.com/storage/vault-files/...",
+        "created_at": "2026-05-29T04:00:00.000000Z"
+      }
+    ],
+    "created_at": "2026-05-29T04:00:00.000000Z",
+    "updated_at": "2026-05-29T04:00:00.000000Z"
+  },
+  "errors": []
+}
+```
+
+</CodeGroup>
+
+<ResponseField name="data.id" type="string">
+  The obfuscated abstract id. Use this as the opaque identifier for the abstract.
+</ResponseField>
+
+<ResponseField name="data.status" type="string">
+  The abstract's status name, or `null`. A status is set only when the chosen
+  template has statuses enabled, in which case the template's default status is
+  applied.
+</ResponseField>
+
+<ResponseField name="data.files" type="array">
+  The documents attached to the abstract. Empty when none were sent. Files are
+  processed asynchronously; `is_processing` is `true` until processing finishes.
+</ResponseField>
+
+<ResponseField name="errors" type="array">
+  Per-file failures, at the top level alongside `data`. Empty when every file
+  succeeded (or none were sent). See [Partial failures](#partial-failures).
+</ResponseField>
+
+## Supported file types
+
+PDF, DOCX, DOC, PPTX, PPT, TXT, XLSX, XLS, PNG, JPG, JPEG, TIFF, GIF, BMP, WEBP.
+
+## Partial failures
+
+Files are validated individually. The abstract is **always created** as long as
+its fields are valid. If a file fails (e.g. a PDF over the page limit), the
+abstract is still created, the good files are attached, and the failed file's
+reason appears in the top-level `errors` array:
+
+```json
+{
+  "data": { "id": "q7Lm9", "files": [ /* ... */ ] },
+  "errors": [
+    { "filename": "huge.pdf", "error": "PDF exceeds 500 page limit" }
+  ]
+}
+```
+
+<Note>
+  Limits: up to 100 MB per file and 500 pages per PDF. Image-heavy PDFs have
+  tighter limits (50 MB / 300 pages).
+</Note>
