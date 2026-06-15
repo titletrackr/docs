@@ -10,7 +10,7 @@ Folders organize your uploaded documents. They can be nested.
 <CodeGroup>
 
 ```bash cURL
-curl https://api.titletrackr.com/api/v1/file-vault/folders \
+curl https://api.titletrackr.com/v1/file-vault/folders \
   -H "Authorization: Bearer ttr_live_xxx" \
   -H "Accept: application/json"
 ```
@@ -39,7 +39,7 @@ curl https://api.titletrackr.com/api/v1/file-vault/folders \
 <CodeGroup>
 
 ```bash cURL
-curl -X POST https://api.titletrackr.com/api/v1/file-vault/folders \
+curl -X POST https://api.titletrackr.com/v1/file-vault/folders \
   -H "Authorization: Bearer ttr_live_xxx" \
   -H "Content-Type: application/json" \
   -d '{ "name": "Migrations" }'

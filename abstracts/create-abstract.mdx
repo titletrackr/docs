@@ -1,7 +1,7 @@
 ---
 title: "Create an Abstract"
-description: "POST /api/v1/abstracts"
-api: "POST /api/v1/abstracts"
+description: "POST /v1/abstracts"
+api: "POST /v1/abstracts"
 ---
 
 Create a title abstract in your workspace from a template. Send the request as
@@ -61,7 +61,7 @@ its custom fields; documents are added later.
 <CodeGroup>
 
 ```bash cURL
-curl -X POST https://api.titletrackr.com/api/v1/abstracts \
+curl -X POST https://api.titletrackr.com/v1/abstracts \
   -H "Authorization: Bearer ttr_live_xxx" \
   -H "Accept: application/json" \
   -F "template_id=7" \
@@ -104,7 +104,7 @@ If the documents are ready, attach them in the same request with `files[]`.
 <CodeGroup>
 
 ```bash cURL
-curl -X POST https://api.titletrackr.com/api/v1/abstracts \
+curl -X POST https://api.titletrackr.com/v1/abstracts \
   -H "Authorization: Bearer ttr_live_xxx" \
   -H "Accept: application/json" \
   -F "template_id=7" \
@@ -136,7 +136,7 @@ curl -X POST https://api.titletrackr.com/api/v1/abstracts \
         "file_size_human": "100 KB",
         "folder_id": null,
         "is_processing": true,
-        "public_url": "https://app.titletrackr.com/storage/vault-files/...",
+        "download_url": "https://api.titletrackr.com/v1/file-vault/files/344/download",
         "created_at": "2026-05-29T04:00:00.000000Z"
       }
     ],

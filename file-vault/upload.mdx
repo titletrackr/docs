@@ -1,7 +1,7 @@
 ---
 title: "Upload Files"
-description: "POST /api/v1/file-vault/upload"
-api: "POST /api/v1/file-vault/upload"
+description: "POST /v1/file-vault/upload"
+api: "POST /v1/file-vault/upload"
 ---
 
 Upload one or more documents into the File Vault. Send the request as
@@ -23,7 +23,7 @@ Upload one or more documents into the File Vault. Send the request as
 <CodeGroup>
 
 ```bash cURL
-curl -X POST https://api.titletrackr.com/api/v1/file-vault/upload \
+curl -X POST https://api.titletrackr.com/v1/file-vault/upload \
   -H "Authorization: Bearer ttr_live_xxx" \
   -F "files[]=@deed.pdf" \
   -F "files[]=@survey.pdf" \
@@ -45,7 +45,7 @@ curl -X POST https://api.titletrackr.com/api/v1/file-vault/upload \
       "file_size_human": "242.3 KB",
       "folder_id": 42,
       "is_processing": false,
-      "public_url": "https://app.titletrackr.com/storage/vault-files/...",
+      "download_url": "https://api.titletrackr.com/v1/file-vault/files/345/download",
       "created_at": "2026-05-29T04:00:00.000000Z"
     }
   ],

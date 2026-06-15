@@ -42,9 +42,10 @@ Each uploaded file is returned with the following fields.
   not processed until search is enabled in-app.
 </ResponseField>
 
-<ResponseField name="public_url" type="string | null">
-  A direct URL to the file when it is stored on public storage; `null`
-  otherwise.
+<ResponseField name="download_url" type="string">
+  A token-authenticated endpoint for retrieving the file's bytes. Call it with
+  your API key (`Authorization: Bearer ...`); it redirects to a short-lived
+  pre-signed URL you can follow in a browser or with `curl -L`.
 </ResponseField>
 
 <ResponseField name="created_at" type="string">

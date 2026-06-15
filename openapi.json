@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "description": "Push orders and documents into TitleTrackr."
   },
-  "servers": [{ "url": "https://api.titletrackr.com/api/v1" }],
+  "servers": [{ "url": "https://api.titletrackr.com/v1" }],
   "security": [{ "bearerAuth": [] }],
   "paths": {
     "/order-fields": {
@@ -331,7 +331,7 @@
           "file_size_human": { "type": "string" },
           "folder_id": { "type": "integer", "nullable": true },
           "is_processing": { "type": "boolean" },
-          "public_url": { "type": "string", "nullable": true },
+          "download_url": { "type": "string", "description": "Token-authenticated download endpoint. Call it with your API key; it redirects to a short-lived pre-signed URL you can follow in a browser or with curl -L." },
           "created_at": { "type": "string", "format": "date-time" }
         }
       }
